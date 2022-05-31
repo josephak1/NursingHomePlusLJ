@@ -71,5 +71,5 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - [ ] TF_4: Löschung und Bearbeitung von Daten als Administrator
 
 ### Vermögensstand muss raus
-- [ ] TF_1: Alle Views aufrufen (es wird kein Vermögensstand angezeigt)
-- [ ] TF_2: Datenbank überprüfen (Auf der Datenbank gibt es keinen Eintrag zum Vermögensstand)
+- [X] TF_1: Alle Views aufrufen (es wird kein Vermögensstand angezeigt)
+- [X] TF_2: Datenbank überprüfen (Auf der Datenbank gibt es keinen Eintrag zum Vermögensstand)
