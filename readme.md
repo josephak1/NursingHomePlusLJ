@@ -50,3 +50,26 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - Benutzername: SA
 - Passwort: SA
 - Bitte nicht in die Datenbank schauen, während die Applikation läuft. Das sorgt leider für einen Lock, der erst wieder verschwindet, wenn IntelliJ neugestartet wird!
+
+## User Stories und Testfälle
+
+### Pflegermodul
+- [ ] TF_1: Alle Pflegekräfte anzeigen
+- [ ] TF_2: neue Pflegekraft hinzufügen
+- [ ] TF_3: Pflegekraft-Daten ändern
+- [ ] TF_4: Pflegekraft-Daten löschen (sperren)
+
+### Patientenakten archiviren und automatisch löschen
+- [ ] TF_1: Patient archivieren
+- [ ] TF_2: Datenbank enthält Datensatz
+- [ ] TF_3: Automatische Löschung
+
+### Login Funktion
+- [ ] TF_1: Login mit falschen Benutzerdaten (login schlägt fehl)
+- [ ] TF_2: Login mit richtigen Benutzerdaten (login funktioniert)
+- [ ] TF_3: Benutzerrollen-Test (Bestimmte daten nur für admin sichtbar)
+- [ ] TF_4: Löschung und Bearbeitung von Daten als Administrator
+
+### Vermögensstand muss raus
+- [ ] TF_1: Alle Views aufrufen (es wird kein Vermögensstand angezeigt)
+- [ ] TF_2: Datenbank überprüfen (Auf der Datenbank gibt es keinen Eintrag zum Vermögensstand)
