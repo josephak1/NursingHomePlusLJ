@@ -54,12 +54,12 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 ## User Stories und Testfälle
 
 ### Pflegermodul
-- [ ] TF_1: Alle Pflegekräfte anzeigen
-- [ ] TF_2: neue Pflegekraft hinzufügen
-- [ ] TF_3: Pflegekraft-Daten ändern
-- [ ] TF_4: Pflegekraft-Daten löschen (sperren)
+- [x] TF_1: Alle Pflegekräfte anzeigen
+- [x] TF_2: neue Pflegekraft hinzufügen
+- [x] TF_3: Pflegekraft-Daten ändern
+- [x] TF_4: Pflegekraft-Daten löschen (sperren)
 
-### Patientenakten archiviren und automatisch löschen
+### Patientenakten archivieren und automatisch löschen
 - [ ] TF_1: Patient archivieren
 - [ ] TF_2: Datenbank enthält Datensatz
 - [ ] TF_3: Automatische Löschung
