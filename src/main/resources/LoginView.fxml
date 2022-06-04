@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.LoginViewController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <VBox alignment="CENTER" prefWidth="200.0" spacing="10.0"
+              layoutX="31.0" layoutY="120.0"
+              AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="80.0">
+            <TextField fx:id="txfUserName" onAction="#handleOk"/>
+            <TextField fx:id="txfUserPassword" onAction="#handleOk"/>
+            <Button onAction="#handleOk" text="OK"/>
+        </VBox>
+    </children>
+
+</AnchorPane>

@@ -65,11 +65,19 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - [ ] TF_3: Automatische Löschung
 
 ### Login Funktion
-- [ ] TF_1: Login mit falschen Benutzerdaten (login schlägt fehl)
-- [ ] TF_2: Login mit richtigen Benutzerdaten (login funktioniert)
+- [x] TF_1: Login mit falschen Benutzerdaten (login schlägt fehl)
+- [x] TF_2: Login mit richtigen Benutzerdaten (login funktioniert)
 - [ ] TF_3: Benutzerrollen-Test (Bestimmte daten nur für admin sichtbar)
 - [ ] TF_4: Löschung und Bearbeitung von Daten als Administrator
 
 ### Vermögensstand muss raus
 - [X] TF_1: Alle Views aufrufen (es wird kein Vermögensstand angezeigt)
 - [X] TF_2: Datenbank überprüfen (Auf der Datenbank gibt es keinen Eintrag zum Vermögensstand)
+
+## Technische Hinweise zu den Änderungen/User Stories
+
+Zum Einloggen kann das admin Konto benutzt werden:
+ - Benutzername: admin
+ - Passwort: 1234
+
+(Bitte nicht löschen!)
