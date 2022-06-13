@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -25,7 +26,7 @@ public class LoginViewController {
     @FXML
     TextField txfUserName;
     @FXML
-    TextField txfUserPassword;
+    PasswordField txfUserPassword;
 
     public void handleOk(ActionEvent actionEvent) {
         String userName = txfUserName.getText();

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.Font?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controller.LoginViewController"
@@ -15,9 +16,18 @@
               layoutX="31.0" layoutY="120.0"
               AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="80.0">
             <TextField fx:id="txfUserName" onAction="#handleOk"/>
-            <TextField fx:id="txfUserPassword" onAction="#handleOk"/>
+            <PasswordField fx:id="txfUserPassword" onAction="#handleOk"/>
             <Button onAction="#handleOk" text="OK"/>
         </VBox>
+        <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefWidth="200.0" spacing="25.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" minWidth="400.0" text="Login" textAlignment="CENTER">
+                    <font>
+                        <Font size="36.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
     </children>
 
 </AnchorPane>
