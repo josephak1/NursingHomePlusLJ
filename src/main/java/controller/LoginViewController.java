@@ -36,7 +36,7 @@ public class LoginViewController {
             Connection conn = ConnectionBuilder.getConnection();
             Statement st = conn.createStatement();
 
-            String exSt = String.format("SELECT * FROM caregiver WHERE username = '%s'", userName, userPassword);
+            String exSt = String.format("SELECT * FROM caregiver WHERE username = '%s' AND password = '%s'", userName, userPassword);
             ResultSet set = st.executeQuery(exSt);
             Caregiver c;
             if(set.next()){
