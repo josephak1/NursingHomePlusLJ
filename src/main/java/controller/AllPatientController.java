@@ -58,7 +58,7 @@ public class AllPatientController {
      * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
      */
     public void initialize() {
-        readAllAndShowInTableView();
+        readAllActiveAndShowInTableView();
 
         this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("pid"));
 
@@ -162,15 +162,45 @@ public class AllPatientController {
             e.printStackTrace();
         }
     }
+    private void readAllActiveAndShowInTableView() {
+        this.tableviewContent.clear();
+        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
+        List<Patient> allPatients;
+        try {
+            allPatients = dao.readActive();
+            for (Patient p : allPatients) {
+                this.tableviewContent.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and {@link TreatmentDAO}
      */
     @FXML
-    public void handleDeleteRow() {
+    public void handleArchive() {
+        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+        try {
+            String date = LocalDate.now().toString();
+
+            dao.archiveById(selectedItem.getPid(), date);
+            this.tableView.getItems().remove(selectedItem);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and {@link TreatmentDAO}
+     */
+    @FXML
+    public void handleDelete() {
         TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
+
             tDao.deleteByPid(selectedItem.getPid());
             dao.deleteById(selectedItem.getPid());
             this.tableView.getItems().remove(selectedItem);
@@ -191,7 +221,7 @@ public class AllPatientController {
         String carelevel = this.txtCarelevel.getText();
         String room = this.txtRoom.getText();
         try {
-            Patient p = new Patient(firstname, surname, date, carelevel, room);
+            Patient p = new Patient(firstname, surname, date, carelevel, room, null);
             dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();

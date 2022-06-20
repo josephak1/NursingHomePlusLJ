@@ -117,6 +117,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         Statement st = conn.createStatement();
         st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
     }
+
     // endregion
 
     // region Getter from ResultSets

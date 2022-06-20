@@ -14,7 +14,7 @@ public class Patient extends Person {
     private String careLevel;
     private String roomnumber;
     private List<Treatment> allTreatments = new ArrayList<Treatment>();
-
+    private LocalDate archived;
     /**
      * constructs a patient from the given params.
      * @param firstName
@@ -23,11 +23,12 @@ public class Patient extends Person {
      * @param careLevel
      * @param roomnumber
      */
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber) {
+    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, LocalDate archived) {
         super(firstName, surname);
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
+        this.archived = archived;
     }
 
     /**
@@ -39,12 +40,13 @@ public class Patient extends Person {
      * @param careLevel
      * @param roomnumber
      */
-    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber) {
+    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, LocalDate archived) {
         super(firstName, surname);
         this.pid = pid;
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
+        this.archived = archived;
     }
 
     /**
@@ -104,7 +106,9 @@ public class Patient extends Person {
         this.roomnumber = roomnumber;
     }
 
-
+    public LocalDate getArchived(){
+        return this.archived;
+    }
 
 
     /**

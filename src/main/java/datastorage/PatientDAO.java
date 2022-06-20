@@ -5,8 +5,10 @@ import utils.DateConverter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implements the Interface <code>DAOImp</code>. Overrides methods to generate specific patient-SQL-queries.
@@ -79,6 +81,20 @@ public class PatientDAO extends DAOimp<Patient> {
     protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM patient WHERE pid=%d", key);
     }
+    public void archiveById(long key, String date) throws SQLException {
+
+        Statement st = conn.createStatement();
+        st.executeUpdate(String.format("UPDATE patient Set Archivdatum = '%s' WHERE pid=%d", date, key));
+    }
+
+    public List<Patient> readActive() throws SQLException {
+        ArrayList<Patient> list = new ArrayList<Patient>();
+        Patient object = null;
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery("SELECT * FROM patient WHERE Archivdatum IS NULL");
+        list = getListFromResultSet(result);
+        return list;
+    }
     // endregion
 
     // region Getter from ResultSets
@@ -91,12 +107,19 @@ public class PatientDAO extends DAOimp<Patient> {
     protected Patient getInstanceFromResultSet(ResultSet result) throws SQLException {
         Patient p;
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+        String archString = result.getString(7);
+
+        LocalDate archived = archString == null ?
+                null :
+                DateConverter.convertStringToLocalDate(result.getString(7));
         p = new Patient(result.getInt(1),
                 result.getString(2),
                 result.getString(3),
                 date,
                 result.getString(5),
-                result.getString(6));
+                result.getString(6),
+                archived);
+
         return p;
     }
 
@@ -111,12 +134,18 @@ public class PatientDAO extends DAOimp<Patient> {
         Patient p;
         while (result.next()) {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+            String archString = result.getString(7);
+
+            LocalDate archived = archString == null ?
+                    null :
+                    DateConverter.convertStringToLocalDate(result.getString(7));
             p = new Patient(result.getInt(1),
                     result.getString(2),
                     result.getString(3),
                     date,
                     result.getString(5),
-                    result.getString(6));
+                    result.getString(6),
+                    archived);
             list.add(p);
         }
         return list;
