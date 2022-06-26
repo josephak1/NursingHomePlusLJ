@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Caregiver;
+import model.ProgrammSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -52,6 +53,7 @@ public class LoginViewController {
                 BorderPane pane = loader.load();
                 Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(pane));
+                ProgrammSession.getSession().setActiveUser(c);
             }
 
             String l = "hi";

@@ -60,9 +60,9 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - [x] TF_4: Pflegekraft-Daten löschen (sperren)
 
 ### Patientenakten archivieren und automatisch löschen
-- [ ] TF_1: Patient archivieren
-- [ ] TF_2: Datenbank enthält Datensatz
-- [ ] TF_3: Automatische Löschung
+- [x] TF_1: Patient archivieren
+- [x] TF_2: Datenbank enthält Datensatz
+- [x] TF_3: Automatische Löschung
 
 ### Login Funktion
 - [x] TF_1: Login mit falschen Benutzerdaten (login schlägt fehl)

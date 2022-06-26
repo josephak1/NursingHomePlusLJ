@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.cell.TextFieldTreeTableCell;
+import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.LongStringConverter;
 import model.Patient;
 import utils.DateConverter;
 import datastorage.DAOFactory;
@@ -34,6 +37,8 @@ public class AllPatientController {
     private TableColumn<Patient, String> colCareLevel;
     @FXML
     private TableColumn<Patient, String> colRoom;
+    @FXML
+    private TableColumn<Patient, Integer> colCid;
 
     @FXML
     Button btnDelete;
@@ -78,6 +83,9 @@ public class AllPatientController {
 
         this.colRoom.setCellValueFactory(new PropertyValueFactory<Patient, String>("roomnumber"));
         this.colRoom.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        this.colCid.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("cid"));
+        this.colCid.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
 
 
         //Anzeigen der Daten
@@ -131,6 +139,12 @@ public class AllPatientController {
     @FXML
     public void handleOnEditRoomnumber(TableColumn.CellEditEvent<Patient, String> event){
         event.getRowValue().setRoomnumber(event.getNewValue());
+        doUpdate(event);
+    }
+    @FXML
+    public void handleOnEditCid(TableColumn.CellEditEvent<Patient, String> event)
+    {
+        event.getRowValue().setCid(event.getNewValue());
         doUpdate(event);
     }
 
@@ -240,4 +254,6 @@ public class AllPatientController {
         this.txtCarelevel.clear();
         this.txtRoom.clear();
     }
+
+
 }

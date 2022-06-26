@@ -3,6 +3,7 @@ package controller;
 import datastorage.ConnectionBuilder;
 import datastorage.DAOFactory;
 import datastorage.PatientDAO;
+import datastorage.TreatmentDAO;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -60,17 +61,19 @@ public class Main extends Application {
         }
     }
     public void checkExpiredPatients(){
-        PatientDAO dao = DAOFactory.getDAOFactory().createPatientDAO();
+        PatientDAO pDao = DAOFactory.getDAOFactory().createPatientDAO();
+        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         List<Patient> allPatients;
         LocalDate currentDate = LocalDate.now();
         try {
-            allPatients = dao.readAll();
+            allPatients = pDao.readAll();
             for (Patient p : allPatients) {
                 LocalDate from = p.getArchived();
                 if (from != null){
                     long years = ChronoUnit.YEARS.between(p.getArchived(), currentDate);
                     if (years >= 10){
-                        dao.deleteById(p.getPid());
+                        tDao.deleteByPid(p.getPid());
+                        pDao.deleteById(p.getPid());
                     }
                 }
 

@@ -68,8 +68,8 @@ public class PatientDAO extends DAOimp<Patient> {
     @Override
     protected String getUpdateStatementString(Patient patient) {
         return String.format("UPDATE patient SET firstname = '%s', surname = '%s', dateOfBirth = '%s', carelevel = '%s', " +
-                        "roomnumber = '%s' WHERE pid = %d", patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(),
-                patient.getCareLevel(), patient.getRoomnumber(), patient.getPid());
+                        "roomnumber = '%s' cid = %d WHERE pid = %d", patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(),
+                patient.getCareLevel(), patient.getRoomnumber(),patient.getCid(), patient.getPid());
     }
 
     /**
@@ -113,6 +113,7 @@ public class PatientDAO extends DAOimp<Patient> {
                 null :
                 DateConverter.convertStringToLocalDate(result.getString(7));
         p = new Patient(result.getInt(1),
+                result.getInt(8),
                 result.getString(2),
                 result.getString(3),
                 date,
@@ -140,6 +141,7 @@ public class PatientDAO extends DAOimp<Patient> {
                     null :
                     DateConverter.convertStringToLocalDate(result.getString(7));
             p = new Patient(result.getInt(1),
+                    result.getInt(8),
                     result.getString(2),
                     result.getString(3),
                     date,
