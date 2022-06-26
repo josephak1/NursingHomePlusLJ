@@ -11,9 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.Patient;
-import model.Treatment;
+import model.*;
 import datastorage.DAOFactory;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,6 +26,8 @@ public class AllTreatmentController {
     private TableColumn<Treatment, Integer> colID;
     @FXML
     private TableColumn<Treatment, Integer> colPid;
+    @FXML
+    private TableColumn<Treatment, Integer> colCid;
     @FXML
     private TableColumn<Treatment, String> colDate;
     @FXML
@@ -57,6 +59,7 @@ public class AllTreatmentController {
 
         this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("tid"));
         this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("pid"));
+        this.colCid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("cid"));
         this.colDate.setCellValueFactory(new PropertyValueFactory<Treatment, String>("date"));
         this.colBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
         this.colEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
@@ -66,12 +69,21 @@ public class AllTreatmentController {
     }
 
     public void readAllAndShowInTableView() {
-        this.tableviewContent.clear();
         comboBox.getSelectionModel().select(0);
+        this.tableviewContent.clear();
         this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        Caregiver activeUser = (Caregiver)ProgrammSession.getSession().getActiveUser();
         List<Treatment> allTreatments;
         try {
-            allTreatments = dao.readAll();
+            // show all Treatments the current user is allowed to see.
+
+            if (activeUser.getIsAdmin()){
+                allTreatments = dao.readAll();
+            }
+            else{
+                allTreatments = dao.readTreatmentsByCid(activeUser.getCid());
+            }
+
             for (Treatment treatment : allTreatments) {
                 this.tableviewContent.add(treatment);
             }
@@ -101,19 +113,14 @@ public class AllTreatmentController {
         this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         List<Treatment> allTreatments;
         if(p.equals("alle")){
-            try {
-                allTreatments= this.dao.readAll();
-                for (Treatment treatment : allTreatments) {
-                    this.tableviewContent.add(treatment);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            readAllAndShowInTableView();
+            return;
         }
         Patient patient = searchInList(p);
         if(patient !=null){
             try {
-                allTreatments = dao.readTreatmentsByPid(patient.getPid());
+                Caregiver activeUser = (Caregiver)ProgrammSession.getSession().getActiveUser();
+                allTreatments = dao.readTreatmentsByPidAndCid(patient.getPid(), activeUser.getCid());
                 for (Treatment treatment : allTreatments) {
                     this.tableviewContent.add(treatment);
                 }

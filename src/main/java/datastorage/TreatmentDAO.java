@@ -36,10 +36,10 @@ public class TreatmentDAO extends DAOimp<Treatment> {
      */
     @Override
     protected String getCreateStatementString(Treatment treatment) {
-        return String.format("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES " +
-                "(%d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
+        return String.format("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks, cid) VALUES " +
+                "(%d, '%s', '%s', '%s', '%s', '%s', %d)", treatment.getPid(), treatment.getDate(),
                 treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
-                treatment.getRemarks());
+                treatment.getRemarks(), treatment.getCid());
     }
 
     /**
@@ -69,8 +69,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     @Override
     protected String getUpdateStatementString(Treatment treatment) {
         return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
-                        "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getDate(),
-                treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(),
+                        "description = '%s', remarks = '%s', cid = %d WHERE tid = %d", treatment.getPid(), treatment.getDate(),
+                treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(), treatment.getCid(),
                 treatment.getTid());
     }
 
@@ -92,6 +92,12 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     private String getReadAllTreatmentsOfOnePatientByPid(long pid){
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
+    private String getReadAllTreatmentsOfOneCaregiverByCid(long cid){
+        return String.format("SELECT * FROM treatment WHERE cid = %d", cid);
+    }
+    private String getReadAllTreatmentsByPidAndCid(long pid, long cid){
+        return String.format("SELECT * FROM treatment WHERE pid = %d AND cid = %d", pid, cid);
+    }
     // endregion
 
     // region Execute SQL-Statement
@@ -105,6 +111,19 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadAllTreatmentsOfOnePatientByPid(pid));
+        return getListFromResultSet(result);
+    }
+
+    public List<Treatment> readTreatmentsByCid(long cid) throws SQLException {
+
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(getReadAllTreatmentsOfOneCaregiverByCid(cid));
+        return getListFromResultSet(result);
+    }
+    public List<Treatment> readTreatmentsByPidAndCid(long pid, long cid) throws SQLException {
+
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery(getReadAllTreatmentsByPidAndCid(pid, cid));
         return getListFromResultSet(result);
     }
 
@@ -133,6 +152,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
         Treatment m = new Treatment(result.getLong(1),
                 result.getLong(2),
+                result.getLong(8),
                 date, begin, end,
                 result.getString(6),
                 result.getString(7));
@@ -154,6 +174,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
             t = new Treatment(result.getLong(1),
                     result.getLong(2),
+                    result.getLong(8),
                     date, begin, end,
                     result.getString(6),
                     result.getString(7));

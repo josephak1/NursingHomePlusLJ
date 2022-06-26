@@ -12,6 +12,7 @@ import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
 import model.Patient;
+import model.ProgrammSession;
 import utils.DateConverter;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
@@ -65,29 +66,25 @@ public class AllPatientController {
     public void initialize() {
         readAllActiveAndShowInTableView();
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("pid"));
-
         //CellValuefactory zum Anzeigen der Daten in der TableView
+        this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("pid"));
         this.colFirstName.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
-        //CellFactory zum Schreiben innerhalb der Tabelle
-        this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-
         this.colSurname.setCellValueFactory(new PropertyValueFactory<Patient, String>("surname"));
-        this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
-
         this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<Patient, String>("dateOfBirth"));
-        this.colDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
-
         this.colCareLevel.setCellValueFactory(new PropertyValueFactory<Patient, String>("careLevel"));
-        this.colCareLevel.setCellFactory(TextFieldTableCell.forTableColumn());
-
         this.colRoom.setCellValueFactory(new PropertyValueFactory<Patient, String>("roomnumber"));
-        this.colRoom.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colCid.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("cid"));
-        this.colCid.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-
-
+        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()) {
+            //CellFactory zum Schreiben innerhalb der Tabelle
+            this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
+            this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
+            this.colDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
+            this.colCareLevel.setCellFactory(TextFieldTableCell.forTableColumn());
+            this.colRoom.setCellFactory(TextFieldTableCell.forTableColumn());
+        }
+        else{
+            this.btnDelete.setDisable(true);
+        }
         //Anzeigen der Daten
         this.tableView.setItems(this.tableviewContent);
     }
@@ -139,12 +136,6 @@ public class AllPatientController {
     @FXML
     public void handleOnEditRoomnumber(TableColumn.CellEditEvent<Patient, String> event){
         event.getRowValue().setRoomnumber(event.getNewValue());
-        doUpdate(event);
-    }
-    @FXML
-    public void handleOnEditCid(TableColumn.CellEditEvent<Patient, String> event)
-    {
-        event.getRowValue().setCid(event.getNewValue());
         doUpdate(event);
     }
 

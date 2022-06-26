@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
+import model.ProgrammSession;
 import utils.DateConverter;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
@@ -37,6 +38,10 @@ public class AllCaregiverController
     TextField txtFirstname;
     @FXML
     TextField txtPhoneNumber;
+    @FXML
+    TextField txtPassword;
+    @FXML
+    CheckBox cbAdmin;
 
 
     private ObservableList<Caregiver> tableviewContent = FXCollections.observableArrayList();
@@ -48,18 +53,21 @@ public class AllCaregiverController
     public void initialize() {
         readAllAndShowInTableView();
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Caregiver, Integer>("cid"));
-
         //CellValuefactory zum Anzeigen der Daten in der TableView
+        this.colID.setCellValueFactory(new PropertyValueFactory<Caregiver, Integer>("cid"));
         this.colFirstName.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("firstName"));
-        //CellFactory zum Schreiben innerhalb der Tabelle
-        this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-
         this.colSurname.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("surname"));
-        this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
-
         this.colPhoneNumber.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("phoneNumber"));
-        this.colPhoneNumber.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()) {
+            //CellFactory zum Schreiben innerhalb der Tabelle
+
+            this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
+            this.colPhoneNumber.setCellFactory(TextFieldTableCell.forTableColumn());
+        }
+        else {
+            btnDelete.setDisable(true);
+        }
 
         //Anzeigen der Daten
         this.tableView.setItems(this.tableviewContent);
@@ -146,11 +154,11 @@ public class AllCaregiverController
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
         String username = surname;
-        String password = "1234";
-        boolean isAdmin = true;
+        String password = this.txtPassword.getText();
+        boolean isAdmin = this.cbAdmin.isSelected();
         String phoneNumber = this.txtPhoneNumber.getText();
         try {
-            Caregiver c = new Caregiver(surname, firstname, username, password, isAdmin, phoneNumber);
+            Caregiver c = new Caregiver(firstname, surname, username, password, isAdmin, phoneNumber);
             dao.create(c);
         } catch (SQLException e) {
             e.printStackTrace();

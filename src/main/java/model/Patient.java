@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class Patient extends Person {
     private long pid;
-    private long cid;
     private LocalDate dateOfBirth;
     private String careLevel;
     private String roomnumber;
@@ -41,10 +40,9 @@ public class Patient extends Person {
      * @param careLevel
      * @param roomnumber
      */
-    public Patient(long pid, long cid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, LocalDate archived) {
+    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, LocalDate archived) {
         super(firstName, surname);
         this.pid = pid;
-        this.cid = cid;
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
@@ -57,12 +55,6 @@ public class Patient extends Person {
      */
     public long getPid() {
         return pid;
-    }
-    public long getCid(){
-        return this.cid;
-    }
-    public void setCid(String cid){
-        this.cid = Long.parseLong(cid);
     }
 
     /**

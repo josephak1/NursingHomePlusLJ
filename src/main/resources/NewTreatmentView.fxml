@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewTreatmentController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewTreatmentController">
    <children>
       <HBox alignment="TOP_CENTER" prefWidth="200.0" spacing="25.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -60,9 +60,15 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+             <Label text="Pflegekraft:" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                 <font>
+                     <Font name="System Bold" size="13.0" />
+                 </font>
+             </Label>
             <TextField fx:id="txtBegin" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <TextField fx:id="txtEnd" maxWidth="192.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="txtDescription" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <ComboBox fx:id="caregiverComboBox" prefWidth="192.0" GridPane.columnIndex="3" GridPane.rowIndex="2" onAction="#handleComboBox" />
             <DatePicker fx:id="datepicker" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="lblFirstname" text="Vorname" GridPane.columnIndex="1" />
             <Label fx:id="lblSurname" text="Nachname" GridPane.columnIndex="3" />
