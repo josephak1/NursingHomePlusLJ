@@ -9,12 +9,16 @@ import java.util.List;
  * Patients live in a NURSING home and are treated by nurses.
  */
 public class Patient extends Person {
+    // region Fields
     private long pid;
     private LocalDate dateOfBirth;
     private String careLevel;
     private String roomnumber;
     private List<Treatment> allTreatments = new ArrayList<Treatment>();
     private LocalDate archived;
+    // endregion
+
+    // region Constructor
     /**
      * constructs a patient from the given params.
      * @param firstName
@@ -48,7 +52,9 @@ public class Patient extends Person {
         this.roomnumber = roomnumber;
         this.archived = archived;
     }
+    // endregion
 
+    // region Get/Set
     /**
      *
      * @return patient id
@@ -110,6 +116,7 @@ public class Patient extends Person {
         return this.archived;
     }
 
+    // endregion
 
     /**
      * adds a treatment to the treatment-list, if it does not already contain it.

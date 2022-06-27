@@ -1,18 +1,14 @@
 package controller;
 
 import datastorage.PatientDAO;
-import datastorage.TreatmentDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.control.cell.TextFieldTreeTableCell;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.LongStringConverter;
 import model.Patient;
-import model.ProgrammSession;
+import model.ApplicationSession;
 import utils.DateConverter;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
@@ -70,7 +66,7 @@ public class AllPatientController {
      * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
      */
     public void initialize() {
-        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()) {
+        if (ApplicationSession.getSession().getActiveUser().getIsAdmin()) {
             readAllAndShowInTableView();
         }
         else{
@@ -85,7 +81,7 @@ public class AllPatientController {
         this.colCareLevel.setCellValueFactory(new PropertyValueFactory<Patient, String>("careLevel"));
         this.colRoom.setCellValueFactory(new PropertyValueFactory<Patient, String>("roomnumber"));
 
-        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()) {
+        if (ApplicationSession.getSession().getActiveUser().getIsAdmin()) {
             //CellFactory zum Schreiben innerhalb der Tabelle
             this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
             this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -242,7 +238,7 @@ public class AllPatientController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()){
+        if (ApplicationSession.getSession().getActiveUser().getIsAdmin()){
             readAllAndShowInTableView();
         }
         else{

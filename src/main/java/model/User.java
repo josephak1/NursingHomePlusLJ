@@ -2,14 +2,26 @@ package model;
 
 
 /**
- * User and password for Login
+ * Representation of a User Account
  */
 public abstract class User extends Person
 {
+    // region Fields
     private String _username;
     private String _password;
     private boolean _isAdmin;
+    // endregion
 
+    // region Constructor
+
+    /**
+     * constructs a user
+     * @param firstName
+     * @param surname
+     * @param username
+     * @param password
+     * @param isAdmin
+     */
     public User(String firstName, String surname,
                 String username, String password, boolean isAdmin)
     {
@@ -18,6 +30,7 @@ public abstract class User extends Person
         _password = password;
         _isAdmin = isAdmin;
     }
+    // endregion
 
     // region Get/Set
 

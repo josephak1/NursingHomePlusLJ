@@ -88,7 +88,7 @@ public class AllTreatmentController {
         comboBox.getSelectionModel().select(0);
         this.tableviewContent.clear();
         this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
-        Caregiver activeUser = (Caregiver)ProgrammSession.getSession().getActiveUser();
+        Caregiver activeUser = (Caregiver) ApplicationSession.getSession().getActiveUser();
         List<Treatment> allTreatments;
         try {
             // show all Treatments the current user is allowed to see.
@@ -204,7 +204,7 @@ public class AllTreatmentController {
         Patient patient = searchInList(p);
         if(patient !=null){
             try {
-                Caregiver activeUser = (Caregiver)ProgrammSession.getSession().getActiveUser();
+                Caregiver activeUser = (Caregiver) ApplicationSession.getSession().getActiveUser();
                 allTreatments = dao.readTreatmentsByPidAndCid(patient.getPid(), activeUser.getCid());
                 for (Treatment treatment : allTreatments) {
                     this.tableviewContent.add(treatment);

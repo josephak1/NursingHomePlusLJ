@@ -8,6 +8,7 @@ import java.time.LocalTime;
  * Treatments are therapies for patients.
  */
 public class Treatment {
+    // region Fields
     private long tid;
     private long pid;
 
@@ -17,7 +18,9 @@ public class Treatment {
     private LocalTime end;
     private String description;
     private String remarks;
+    // endregion
 
+    // region Constructor
     /**
      * constructs a treatment
      * @param pid
@@ -28,7 +31,6 @@ public class Treatment {
      * @param description
      * @param remarks
      */
-
     public Treatment(long pid, long cid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
         this.pid = pid;
@@ -62,6 +64,7 @@ public class Treatment {
         this.description = description;
         this.remarks = remarks;
     }
+    // endregion
 
     // region Get/Set
 

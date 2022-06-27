@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Caregiver;
 import model.Patient;
-import model.ProgrammSession;
 import model.Treatment;
 import utils.DateConverter;
 import java.sql.SQLException;

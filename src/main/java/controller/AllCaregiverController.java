@@ -9,12 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
-import model.ProgrammSession;
-import model.Treatment;
-import utils.DateConverter;
+import model.ApplicationSession;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -69,7 +66,7 @@ public class AllCaregiverController
         this.colSurname.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("surname"));
         this.colPhoneNumber.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("phoneNumber"));
 
-        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()) {
+        if (ApplicationSession.getSession().getActiveUser().getIsAdmin()) {
             //CellFactory zum Schreiben innerhalb der Tabelle
 
             this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());

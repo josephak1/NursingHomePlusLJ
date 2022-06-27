@@ -5,9 +5,22 @@ package model;
  */
 public class Caregiver extends User
 {
+    // region Fields
     private long _cid;
     private String _phoneNumber;
+    // endregion
 
+    // region Constructor
+
+    /**
+     * Constructor for a caregiver
+     * @param firstName The first name for the {@link Person}
+     * @param surname The surname for the {@link Person}
+     * @param username The username for the {@link User}
+     * @param password The password for the {@link User}
+     * @param isAdmin Has this {@link User} administrator rights?
+     * @param phoneNumber The phone number for this Caregiver
+     */
     public Caregiver(String firstName, String surname,
                      String username, String password, boolean isAdmin, String phoneNumber)
     {
@@ -15,6 +28,16 @@ public class Caregiver extends User
         _phoneNumber = phoneNumber;
     }
 
+    /**
+     * Constructor for a caregiver
+     * @param cid the caregiver-ID
+     * @param firstName The first name for the {@link Person}
+     * @param surname The surname for the {@link Person}
+     * @param username The username for the {@link User}
+     * @param password The password for the {@link User}
+     * @param isAdmin Has this {@link User} administrator rights?
+     * @param phoneNumber The phone number for this Caregiver
+     */
     public Caregiver(long cid, String firstName, String surname,
                      String username, String password, boolean isAdmin, String phoneNumber)
     {
