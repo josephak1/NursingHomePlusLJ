@@ -1,6 +1,7 @@
 package controller;
 
 import datastorage.CaregiverDAO;
+import datastorage.TreatmentDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,14 +10,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
 import model.ProgrammSession;
+import model.Treatment;
 import utils.DateConverter;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * The <code>AllCaregiverController</code> contains the entire logic of the caregiver view.
+ * It determines which data is displayed and how to react to events.
+ */
 public class AllCaregiverController
 {
+    // region Fields
     @FXML
     private TableView<Caregiver> tableView;
     @FXML
@@ -43,12 +50,15 @@ public class AllCaregiverController
     @FXML
     CheckBox cbAdmin;
 
-
     private ObservableList<Caregiver> tableviewContent = FXCollections.observableArrayList();
     private CaregiverDAO dao;
+    // endregion
+
+    // region Methods
 
     /**
-     * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
+     * Initializes the corresponding fields.
+     * Is called as soon as the corresponding FXML file is to be displayed.
      */
     public void initialize() {
         readAllAndShowInTableView();
@@ -74,6 +84,46 @@ public class AllCaregiverController
     }
 
     /**
+     * updates a caregiver by calling the update-Method in the {@link CaregiverDAO}
+     * @param t row to be updated by the user (includes the caregiver)
+     */
+    private void doUpdate(TableColumn.CellEditEvent<Caregiver, String> t) {
+        try {
+            dao.update(t.getRowValue());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * calls readAll in {@link CaregiverDAO} and shows caregiver in the table
+     */
+    private void readAllAndShowInTableView() {
+        this.tableviewContent.clear();
+        this.dao = DAOFactory.getDAOFactory().createCaregiverDAO();
+        List<Caregiver> allCaregivers;
+        try {
+            allCaregivers = dao.readAll();
+            for (Caregiver c : allCaregivers) {
+                this.tableviewContent.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * removes content from all textfields
+     */
+    private void clearTextfields() {
+        this.txtFirstname.clear();
+        this.txtSurname.clear();
+        this.txtPhoneNumber.clear();
+    }
+
+    // region Events
+
+    /**
      * handles new firstname value
      * @param event event including the value that a user entered into the cell
      */
@@ -94,7 +144,7 @@ public class AllCaregiverController
     }
 
     /**
-     * handles new birthdate value
+     * handles new phoneNumber value
      * @param event event including the value that a user entered into the cell
      */
     @FXML
@@ -104,41 +154,14 @@ public class AllCaregiverController
     }
 
     /**
-     * updates a patient by calling the update-Method in the {@link CaregiverDAO}
-     * @param t row to be updated by the user (includes the patient)
-     */
-    private void doUpdate(TableColumn.CellEditEvent<Caregiver, String> t) {
-        try {
-            dao.update(t.getRowValue());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * calls readAll in {@link CaregiverDAO} and shows patients in the table
-     */
-    private void readAllAndShowInTableView() {
-        this.tableviewContent.clear();
-        this.dao = DAOFactory.getDAOFactory().createCaregiverDAO();
-        List<Caregiver> allCaregivers;
-        try {
-            allCaregivers = dao.readAll();
-            for (Caregiver c : allCaregivers) {
-                this.tableviewContent.add(c);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * handles a delete-click-event. Calls the delete methods in the {@link CaregiverDAO}
      */
     @FXML
     public void handleDeleteRow() {
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
+            tDao.deleteByCid(selectedItem.getCid());
             dao.deleteById(selectedItem.getCid());
             this.tableView.getItems().remove(selectedItem);
         } catch (SQLException e) {
@@ -147,7 +170,7 @@ public class AllCaregiverController
     }
 
     /**
-     * handles a add-click-event. Creates a patient and calls the create method in the {@link CaregiverDAO}
+     * handles a add-click-event. Creates a caregiver and calls the create method in the {@link CaregiverDAO}
      */
     @FXML
     public void handleAdd() {
@@ -167,12 +190,6 @@ public class AllCaregiverController
         clearTextfields();
     }
 
-    /**
-     * removes content from all textfields
-     */
-    private void clearTextfields() {
-        this.txtFirstname.clear();
-        this.txtSurname.clear();
-        this.txtPhoneNumber.clear();
-    }
+    // endregion
+    // endregion
 }

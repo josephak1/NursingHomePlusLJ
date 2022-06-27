@@ -21,9 +21,12 @@ import java.util.List;
 
 
 /**
- * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
+ * The <code>AllPatientController</code> contains the entire logic of the patient view.
+ * It determines which data is displayed and how to react to events.
  */
 public class AllPatientController {
+
+    // region Fields
     @FXML
     private TableView<Patient> tableView;
     @FXML
@@ -56,15 +59,23 @@ public class AllPatientController {
     @FXML
     TextField txtRoom;
 
-
     private ObservableList<Patient> tableviewContent = FXCollections.observableArrayList();
     private PatientDAO dao;
+
+    // endregion
+
+    // region Methods
 
     /**
      * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
      */
     public void initialize() {
-        readAllActiveAndShowInTableView();
+        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()) {
+            readAllAndShowInTableView();
+        }
+        else{
+            readAllActiveAndShowInTableView();
+        }
 
         //CellValuefactory zum Anzeigen der Daten in der TableView
         this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("pid"));
@@ -88,6 +99,65 @@ public class AllPatientController {
         //Anzeigen der Daten
         this.tableView.setItems(this.tableviewContent);
     }
+
+    /**
+     * updates a patient by calling the update-Method in the {@link PatientDAO}
+     * @param t row to be updated by the user (includes the patient)
+     */
+    private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
+        try {
+            dao.update(t.getRowValue());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * calls readAll in {@link PatientDAO} and shows patients in the table
+     */
+    private void readAllAndShowInTableView() {
+        this.tableviewContent.clear();
+        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
+        List<Patient> allPatients;
+        try {
+            allPatients = dao.readAll();
+            for (Patient p : allPatients) {
+                this.tableviewContent.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * calls readActive in {@link PatientDAO} and shows patients in the table
+     */
+    private void readAllActiveAndShowInTableView() {
+        this.tableviewContent.clear();
+        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
+        List<Patient> allPatients;
+        try {
+            allPatients = dao.readActive();
+            for (Patient p : allPatients) {
+                this.tableviewContent.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * removes content from all textfields
+     */
+    private void clearTextfields() {
+        this.txtFirstname.clear();
+        this.txtSurname.clear();
+        this.txtBirthday.clear();
+        this.txtCarelevel.clear();
+        this.txtRoom.clear();
+    }
+
+    // region Events
 
     /**
      * handles new firstname value
@@ -140,49 +210,7 @@ public class AllPatientController {
     }
 
     /**
-     * updates a patient by calling the update-Method in the {@link PatientDAO}
-     * @param t row to be updated by the user (includes the patient)
-     */
-    private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
-        try {
-            dao.update(t.getRowValue());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * calls readAll in {@link PatientDAO} and shows patients in the table
-     */
-    private void readAllAndShowInTableView() {
-        this.tableviewContent.clear();
-        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
-        List<Patient> allPatients;
-        try {
-            allPatients = dao.readAll();
-            for (Patient p : allPatients) {
-                this.tableviewContent.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    private void readAllActiveAndShowInTableView() {
-        this.tableviewContent.clear();
-        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
-        List<Patient> allPatients;
-        try {
-            allPatients = dao.readActive();
-            for (Patient p : allPatients) {
-                this.tableviewContent.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and {@link TreatmentDAO}
+     * handles a archive-click-event. Calls the archive method in the {@link PatientDAO}s
      */
     @FXML
     public void handleArchive() {
@@ -191,23 +219,6 @@ public class AllPatientController {
             String date = LocalDate.now().toString();
 
             dao.archiveById(selectedItem.getPid(), date);
-            this.tableView.getItems().remove(selectedItem);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and {@link TreatmentDAO}
-     */
-    @FXML
-    public void handleDelete() {
-        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
-        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
-        try {
-
-            tDao.deleteByPid(selectedItem.getPid());
-            dao.deleteById(selectedItem.getPid());
             this.tableView.getItems().remove(selectedItem);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -231,20 +242,17 @@ public class AllPatientController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        readAllAndShowInTableView();
+        if (ProgrammSession.getSession().getActiveUser().getIsAdmin()){
+            readAllAndShowInTableView();
+        }
+        else{
+            readAllActiveAndShowInTableView();
+        }
+
         clearTextfields();
     }
 
-    /**
-     * removes content from all textfields
-     */
-    private void clearTextfields() {
-        this.txtFirstname.clear();
-        this.txtSurname.clear();
-        this.txtBirthday.clear();
-        this.txtCarelevel.clear();
-        this.txtRoom.clear();
-    }
-
+    // endregion
+    // endregion
 
 }

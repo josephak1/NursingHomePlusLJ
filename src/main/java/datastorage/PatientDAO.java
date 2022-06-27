@@ -81,20 +81,6 @@ public class PatientDAO extends DAOimp<Patient> {
     protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM patient WHERE pid=%d", key);
     }
-    public void archiveById(long key, String date) throws SQLException {
-
-        Statement st = conn.createStatement();
-        st.executeUpdate(String.format("UPDATE patient Set Archivdatum = '%s' WHERE pid=%d", date, key));
-    }
-
-    public List<Patient> readActive() throws SQLException {
-        ArrayList<Patient> list = new ArrayList<Patient>();
-        Patient object = null;
-        Statement st = conn.createStatement();
-        ResultSet result = st.executeQuery("SELECT * FROM patient WHERE Archivdatum IS NULL");
-        list = getListFromResultSet(result);
-        return list;
-    }
     // endregion
 
     // region Getter from ResultSets
@@ -152,5 +138,30 @@ public class PatientDAO extends DAOimp<Patient> {
     }
     //endregion
 
+    /**
+     * Writes a String on the archivdatum column of a patient in the database
+     * @param key the patient-id
+     * @param date the date (yyyy-mm-dd)
+     * @throws SQLException
+     */
+    public void archiveById(long key, String date) throws SQLException {
+
+        Statement st = conn.createStatement();
+        st.executeUpdate(String.format("UPDATE patient Set Archivdatum = '%s' WHERE pid=%d", date, key));
+    }
+
+    /**
+     * reads all patients without an archivdatum
+     * @return ArrayList with patients from the resultSet.
+     * @throws SQLException
+     */
+    public List<Patient> readActive() throws SQLException {
+        ArrayList<Patient> list = new ArrayList<Patient>();
+        Patient object = null;
+        Statement st = conn.createStatement();
+        ResultSet result = st.executeQuery("SELECT * FROM patient WHERE Archivdatum IS NULL");
+        list = getListFromResultSet(result);
+        return list;
+    }
     //endregion
 }
