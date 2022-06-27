@@ -15,7 +15,12 @@ import utils.DateConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * The <code>TreatmentController</code> contains the entire logic of the Treatment view.
+ * It determines which data is displayed and how to react to events.
+ */
 public class TreatmentController {
+    // region Fields
     @FXML
     private Label lblPatientName;
     @FXML
@@ -42,7 +47,16 @@ public class TreatmentController {
     private Patient patient;
     private Caregiver caregiver;
     private Treatment treatment;
+    // endregion
 
+    // region Methods
+
+    /**
+     * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
+     * @param controller the currently active {@link AllTreatmentController}
+     * @param stage the currently active {@link Stage}
+     * @param treatment the {@link Treatment} to be displayed
+     */
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
         this.controller= controller;
@@ -58,6 +72,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * shows the data of the current {@link Treatment}
+     */
     private void showData(){
         this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
@@ -70,6 +87,11 @@ public class TreatmentController {
         this.taRemarks.setText(this.treatment.getRemarks());
     }
 
+    // region Events
+
+    /**
+     * handles the change-click-event
+     */
     @FXML
     public void handleChange(){
         this.treatment.setDate(this.datepicker.getValue().toString());
@@ -82,6 +104,9 @@ public class TreatmentController {
         stage.close();
     }
 
+    /**
+     * calls the update Method of the {@link TreatmentDAO}
+     */
     private void doUpdate(){
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
@@ -91,8 +116,15 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * handles the cancel-click-event
+     */
     @FXML
     public void handleCancel(){
         stage.close();
     }
+
+    // endregion
+    // endregion
+
 }

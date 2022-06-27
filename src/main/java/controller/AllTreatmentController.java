@@ -19,7 +19,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The <code>AllTreatmentController</code> contains the entire logic of the allTreatments view.
+ * It determines which data is displayed and how to react to events.
+ */
 public class AllTreatmentController {
+    // region Fields
     @FXML
     private TableView<Treatment> tableView;
     @FXML
@@ -45,17 +50,25 @@ public class AllTreatmentController {
 
     private ObservableList<Treatment> tableviewContent =
             FXCollections.observableArrayList();
+
     private TreatmentDAO dao;
     private ObservableList<String> myComboBoxData =
             FXCollections.observableArrayList();
-    private ArrayList<Patient> patientList;
-    private Main main;
 
+    private ArrayList<Patient> patientList;
+
+    // endregion
+
+    // region Methods
+
+    /**
+     * Initializes the corresponding fields.
+     * Is called as soon as the corresponding FXML file is to be displayed.
+     */
     public void initialize() {
         readAllAndShowInTableView();
         comboBox.setItems(myComboBoxData);
         comboBox.getSelectionModel().select(0);
-        this.main = main;
 
         this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("tid"));
         this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("pid"));
@@ -68,6 +81,9 @@ public class AllTreatmentController {
         createComboBoxData();
     }
 
+    /**
+     * calls readAll in {@link TreatmentDAO} and shows treatments in the table
+     */
     public void readAllAndShowInTableView() {
         comboBox.getSelectionModel().select(0);
         this.tableviewContent.clear();
@@ -92,6 +108,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Fills the comboBox with the Surnames of all {@link Patient} entries from the database.
+     */
     private void createComboBoxData(){
         PatientDAO dao = DAOFactory.getDAOFactory().createPatientDAO();
         try {
@@ -105,7 +124,73 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * searches a {@link Patient} from the patientList
+     * @param surname the name to search for.
+     * @return the {@link Patient} object with the right surname or null if no object was found.
+     */
+    private Patient searchInList(String surname){
+        for (int i =0; i<this.patientList.size();i++){
+            if(this.patientList.get(i).getSurname().equals(surname)){
+                return this.patientList.get(i);
+            }
+        }
+        return null;
+    }
 
+    /**
+     * Opens a newTreatment window
+     * @param patient the {@link Patient} for wich to create a new treatment.
+     */
+    public void newTreatmentWindow(Patient patient){
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
+            AnchorPane pane = loader.load();
+            Scene scene = new Scene(pane);
+            //da die primaryStage noch im Hintergrund bleiben soll
+            Stage stage = new Stage();
+
+            NewTreatmentController controller = loader.getController();
+            controller.initialize(this, stage, patient);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens a Treatment window
+     * @param treatment the {@link Treatment} to be displayed
+     */
+    public void treatmentWindow(Treatment treatment){
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
+            AnchorPane pane = loader.load();
+            Scene scene = new Scene(pane);
+            //da die primaryStage noch im Hintergrund bleiben soll
+            Stage stage = new Stage();
+            TreatmentController controller = loader.getController();
+
+            controller.initializeController(this, stage, treatment);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    // region Events
+
+    /**
+     * handles the selection of an element in the comboBox
+     */
     @FXML
     public void handleComboBox(){
         String p = this.comboBox.getSelectionModel().getSelectedItem();
@@ -130,15 +215,10 @@ public class AllTreatmentController {
         }
     }
 
-    private Patient searchInList(String surname){
-        for (int i =0; i<this.patientList.size();i++){
-            if(this.patientList.get(i).getSurname().equals(surname)){
-                return this.patientList.get(i);
-            }
-        }
-        return null;
-    }
-
+    /**
+     * handles a delete-click-event.
+     * Calls the delete methods in the {@link TreatmentDAO}
+     */
     @FXML
     public void handleDelete(){
         int index = this.tableView.getSelectionModel().getSelectedIndex();
@@ -151,6 +231,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * handles a new-treatment-click-event
+     */
     @FXML
     public void handleNewTreatment() {
         try{
@@ -167,6 +250,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * handles a mouse-click event on the table.
+     */
     @FXML
     public void handleMouseClick(){
         tableView.setOnMouseClicked(event -> {
@@ -179,43 +265,6 @@ public class AllTreatmentController {
         });
     }
 
-    public void newTreatmentWindow(Patient patient){
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
-            AnchorPane pane = loader.load();
-            Scene scene = new Scene(pane);
-            //da die primaryStage noch im Hintergrund bleiben soll
-            Stage stage = new Stage();
-
-            NewTreatmentController controller = loader.getController();
-            controller.initialize(this, stage, patient);
-
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    public void treatmentWindow(Treatment treatment){
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
-            AnchorPane pane = loader.load();
-            Scene scene = new Scene(pane);
-            //da die primaryStage noch im Hintergrund bleiben soll
-            Stage stage = new Stage();
-            TreatmentController controller = loader.getController();
-
-            controller.initializeController(this, stage, treatment);
-
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+    // endregion
+    // endregion
 }

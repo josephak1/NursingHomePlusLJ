@@ -137,6 +137,16 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
     }
 
+    /**
+     * deletes a treatment from the DB by a Caregiver-ID
+     * @param key
+     * @throws SQLException
+     */
+    public void deleteByCid(long key) throws SQLException {
+        Statement st = conn.createStatement();
+        st.executeUpdate(String.format("Delete FROM treatment WHERE cid= %d", key));
+    }
+
     // endregion
 
     // region Getter from ResultSets

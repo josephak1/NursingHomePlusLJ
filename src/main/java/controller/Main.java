@@ -23,21 +23,33 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * the Main clss containing the logic for initializing the Programm.
+ */
 public class Main extends Application {
 
+    // region Fields
     private Stage primaryStage;
+    // endregion
 
+    // region Methods
+
+    /**
+     * start method called by the derived {@link Application} class
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         mainWindow();
     }
 
+    /**
+     * Loads the first window to be displayed and configures the primaryStage
+     */
     public void mainWindow() {
         try {
-            // FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));
-            // BorderPane pane = loader.load();
             AnchorPane pane = loader.load();
 
             Scene scene = new Scene(pane);
@@ -60,6 +72,11 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
+    /**
+     * checks if any archived {@link Patient} in the database has exceeded the legal time for being saved.
+     * Deletes affected rows if necessary.
+     */
     public void checkExpiredPatients(){
         PatientDAO pDao = DAOFactory.getDAOFactory().createPatientDAO();
         TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
@@ -83,9 +100,13 @@ public class Main extends Application {
         }
     }
 
-
-
+    /**
+     * start of the application
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
+
+    // endregion
 }

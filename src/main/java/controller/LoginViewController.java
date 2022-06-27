@@ -22,13 +22,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * The <code>LoginViewController</code> contains the entire logic of the login view.
+ */
 public class LoginViewController {
 
+    // region Fields
     @FXML
     TextField txfUserName;
     @FXML
     PasswordField txfUserPassword;
+    // endregion
 
+    // region Methods
+
+    /**
+     * handles the ok-click-event
+     * @param actionEvent
+     */
+    @FXML
     public void handleOk(ActionEvent actionEvent) {
         String userName = txfUserName.getText();
         String userPassword = txfUserPassword.getText();
@@ -55,13 +67,11 @@ public class LoginViewController {
                 stage.setScene(new Scene(pane));
                 ProgrammSession.getSession().setActiveUser(c);
             }
-
-            String l = "hi";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
+    // endregion
 }
