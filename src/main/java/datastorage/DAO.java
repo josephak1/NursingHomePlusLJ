@@ -3,6 +3,10 @@ package datastorage;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Interface for DAO methods
+ * @param <T>
+ */
 public interface DAO<T> {
     void create(T t) throws SQLException;
 

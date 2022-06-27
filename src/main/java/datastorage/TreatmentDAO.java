@@ -92,9 +92,20 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     private String getReadAllTreatmentsOfOnePatientByPid(long pid){
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
+    /**
+     * generates a <code>select</code>-Statement for a given caregiver-ID
+     * @param cid for which a specific SELECT is to be created
+     * @return <code>String</code> with the generated SQL.
+     */
     private String getReadAllTreatmentsOfOneCaregiverByCid(long cid){
         return String.format("SELECT * FROM treatment WHERE cid = %d", cid);
     }
+    /**
+     * generates a <code>select</code>-Statement for a given patient-ID and caregiver-ID
+     * @param pid for which a specific SELECT is to be created
+     * @param cid for which a specific SELECT is to be created
+     * @return <code>String</code> with the generated SQL.
+     */
     private String getReadAllTreatmentsByPidAndCid(long pid, long cid){
         return String.format("SELECT * FROM treatment WHERE pid = %d AND cid = %d", pid, cid);
     }
@@ -114,12 +125,26 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return getListFromResultSet(result);
     }
 
+    /**
+     * maps a <code>long</code> to a <code>Treatment-List</code>
+     * @param cid The caregiver-ID
+     * @return ArrayList with treatments matching the given Caregiver-ID
+     * @throws SQLException
+     */
     public List<Treatment> readTreatmentsByCid(long cid) throws SQLException {
 
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadAllTreatmentsOfOneCaregiverByCid(cid));
         return getListFromResultSet(result);
     }
+
+    /**
+     * maps two <code>longs</code> to a <code>Treatment-List</code>
+     * @param pid The patient-ID
+     * @param cid The caregiver-ID
+     * @return ArrayList with treatments matching the given Patient-ID
+     * @throws SQLException
+     */
     public List<Treatment> readTreatmentsByPidAndCid(long pid, long cid) throws SQLException {
 
         Statement st = conn.createStatement();
@@ -194,6 +219,5 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     // endregion
-
     // endregion
 }
