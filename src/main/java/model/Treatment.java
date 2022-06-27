@@ -4,6 +4,9 @@ import utils.DateConverter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Treatments are therapies for patients.
+ */
 public class Treatment {
     private long tid;
     private long pid;
@@ -14,6 +17,17 @@ public class Treatment {
     private LocalTime end;
     private String description;
     private String remarks;
+
+    /**
+     * constructs a treatment
+     * @param pid
+     * @param cid
+     * @param date
+     * @param begin
+     * @param end
+     * @param description
+     * @param remarks
+     */
 
     public Treatment(long pid, long cid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
@@ -26,6 +40,17 @@ public class Treatment {
         this.remarks = remarks;
     }
 
+    /**
+     * constructs a treatment
+     * @param tid
+     * @param pid
+     * @param cid
+     * @param date
+     * @param begin
+     * @param end
+     * @param description
+     * @param remarks
+     */
     public Treatment(long tid, long pid, long cid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
         this.tid = tid;
@@ -37,6 +62,8 @@ public class Treatment {
         this.description = description;
         this.remarks = remarks;
     }
+
+    // region Get/Set
 
     public long getTid() {
         return tid;
@@ -91,6 +118,13 @@ public class Treatment {
         this.remarks = remarks;
     }
 
+    // endregion
+
+
+    /**
+     *
+     * @return string-representation of the treatment
+     */
     public String toString() {
         return "\nBehandlung" + "\nTID: " + this.tid +
                 "\nPID: " + this.pid +

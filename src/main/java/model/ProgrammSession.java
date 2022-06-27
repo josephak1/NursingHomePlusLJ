@@ -16,10 +16,12 @@ public class ProgrammSession
         return _session;
     }
 
+    // region Get/Set
     public void setActiveUser(User u){
         _activeUser = u;
     }
     public User getActiveUser(){
         return _activeUser;
     }
+    // endregion
 }

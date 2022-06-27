@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Caregivers work in a nursing home
+ */
 public class Caregiver extends User
 {
     private long _cid;

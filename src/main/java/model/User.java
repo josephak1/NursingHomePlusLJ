@@ -1,5 +1,9 @@
 package model;
 
+
+/**
+ * User and password for Login
+ */
 public abstract class User extends Person
 {
     private String _username;
